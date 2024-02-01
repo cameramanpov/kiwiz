@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz en Ligne</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        #quiz-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <h1>Quiz sur les Animaux</h1>
+    <div id="question-container"></div>
+    <div id="answers-container"></div>
+    <button onclick="nextQuestion()">Suivant</button>
+    <p id="score">Score: <span id="score-count">0</span></p>
+</div>
+
+<script>
+    var currentQuestionIndex = 0;
+    var score = 0;
+
+    var questions = [
+        {
+            question: "Quel est le plus grand mammifère terrestre ?",
+            answers: ["Éléphant", "Girafe", "Rhinocéros", "Ta maman"],
+            correctAnswer: "Éléphant"
+        },
+        {
+            question: "Combien de continents y a-t-il sur Terre ?",
+            answers: ["5", "6", "7", "Ta maman"],
+            correctAnswer: "7"
+        },
+        {
+            question: "Quel est le plus grand océan du monde ?",
+            answers: ["Océan Atlantique", "Océan Indien", "Océan Pacifique", "Ta maman"],
+            correctAnswer: "Océan Pacifique"
+        }
+    ];
+
+    function loadQuestion() {
+        var questionContainer = document.getElementById("question-container");
+        var currentQuestion = questions[currentQuestionIndex];
+        var answersContainer = document.getElementById("answers-container");
+
+        questionContainer.innerHTML = "<p>" + currentQuestion.question + "</p>";
+
+        var answersHtml = "";
+        currentQuestion.answers.forEach(function (answer) {
+            answersHtml += '<button onclick="checkAnswer(\'' + answer + '\')">' + answer + '</button>';
+        });
+        answersContainer.innerHTML = answersHtml;
+    }
+
+    function checkAnswer(answer) {
+        var currentQuestion = questions[currentQuestionIndex];
+
+        if (answer === currentQuestion.correctAnswer) {
+            score++;
+        }
+
+        document.getElementById("score-count").textContent = score;
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+
+        if (currentQuestionIndex < questions.length) {
+            loadQuestion();
+        } else {
+            endQuiz();
+        }
+    }
+
+    function endQuiz() {
+        var questionContainer = document.getElementById("question-container");
+        var answersContainer = document.getElementById("answers-container");
+
+        questionContainer.innerHTML = "<p>Quiz terminé ! Votre score est de " + score + " sur " + questions.length + ".</p>";
+        answersContainer.innerHTML = "";
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+</html>
